@@ -1,0 +1,16 @@
+{
+  "name": "checking-software-functionality-homework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run-calculator": "node src/task-1-unit-testing/index.js",
+    "test-calculator": "jest src/task-1-unit-testing/__test__/calculator.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
