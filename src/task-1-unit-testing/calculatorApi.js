@@ -1,7 +1,7 @@
 const {
   withOperandsValidation,
   calculationUtilsMap
-} = require("./utils")
+} = require("./utils");
 
 const calculatorApi = Object.entries(calculationUtilsMap).reduce((resultApi, [operationKey, operationFunction]) => {
   resultApi[operationKey] = withOperandsValidation(operationFunction);

@@ -1,13 +1,23 @@
+const {COMMON_DATA} = require("./constants");
+const {errorTextMap} = COMMON_DATA;
+
 function getValidatedOperands(a, b) {
   const aParsed = parseFloat(a);
   const bParsed = parseFloat(b);
 
-  if (Number.isNaN(aParsed)) {
-    throw new Error("Ошибка: первый операнд не является числом");
+  const isFirstOperandNumber = !Number.isNaN(aParsed);
+  const isSecondOperandNumber = !Number.isNaN(bParsed);
+
+  if (!isFirstOperandNumber && !isSecondOperandNumber) {
+    throw new Error(errorTextMap.bothOperandsAreNotNumbers);
   }
 
-  if (Number.isNaN(bParsed)) {
-    throw new Error("Ошибка: второй операнд не является числом");
+  if (!isFirstOperandNumber) {
+    throw new Error(errorTextMap.firstOperandIsNotNumber);
+  }
+
+  if (!isSecondOperandNumber) {
+    throw new Error(errorTextMap.secondOperandIsNotNumber);
   }
 
   return {a: aParsed, b: bParsed};
@@ -27,7 +37,7 @@ const calculationUtilsMap = {
   multiply: (a, b) => a * b,
   divide: (a, b) => {
     if (b === 0) {
-      throw new Error("Ошибка: деление на ноль");
+      throw new Error(errorTextMap.isDivisionByZero);
     }
     return a / b;
   },
@@ -35,9 +45,9 @@ const calculationUtilsMap = {
   hypotenuse: (a, b) => Math.sqrt(a*a + b*b),
   angleA: (a, b) => Math.asin(a / Math.sqrt(a*a + b*b)) * (180 / Math.PI),
   angleB: (a, b) => Math.asin(b / Math.sqrt(a*a + b*b)) * (180 / Math.PI)
-}
+};
 
 module.exports = {
   withOperandsValidation,
   calculationUtilsMap,
-}
+};

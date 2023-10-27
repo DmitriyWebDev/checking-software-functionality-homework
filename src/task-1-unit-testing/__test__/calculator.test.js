@@ -1,7 +1,63 @@
 const { calculatorApi } = require('../calculatorApi');
+const { COMMON_DATA } = require("../constants");
+const { errorTextMap } = COMMON_DATA;
 
 describe('calculatorApi', () => {
   const calculator = calculatorApi;
+  const operationsKeys = Object.keys(calculator);
+
+  describe('Если операнды невалидные', () => {
+    describe('Первый операнд не является числом или литералом строки, выражающим число', () => {
+      const invalidOperands = ['not a number', 11];
+      const cases = operationsKeys.reduce((result, operationKey) => {
+        result.push([operationKey, invalidOperands]);
+
+        return result;
+      }, []);
+
+      test.each(cases)('%p', (operationKey, operands) => {
+        expect(() => {
+          calculator[operationKey].apply(null, operands)
+        }).toThrow(new Error(errorTextMap.firstOperandIsNotNumber));
+      });
+    });
+
+    describe('Второй операнд не является числом или литералом строки, выражающим число', () => {
+      const invalidOperands = [777, null];
+      const cases = operationsKeys.reduce((result, operationKey) => {
+        result.push([operationKey, invalidOperands]);
+
+        return result;
+      }, []);
+
+      test.each(cases)('%p', (operationKey, operands) => {
+        expect(() => {
+          calculator[operationKey].apply(null, operands)
+        }).toThrow(new Error(errorTextMap.secondOperandIsNotNumber));
+      });
+    });
+
+    describe('Оба операнда не являются числами или литералами строк, выражающих числа', () => {
+      const invalidOperands = ['///', {}];
+      const cases = operationsKeys.reduce((result, operationKey) => {
+        result.push([operationKey, invalidOperands]);
+
+        return result;
+      }, []);
+
+      test.each(cases)('%p', (operationKey, operands) => {
+        expect(() => {
+          calculator[operationKey].apply(null, operands)
+        }).toThrow(new Error(errorTextMap.bothOperandsAreNotNumbers));
+      });
+    });
+
+    describe('Производится деление на ноль', () => {
+      expect(() => {
+        calculator.divide(10, 0);
+      }).toThrow(new Error(errorTextMap.isDivisionByZero));
+    });
+  });
 
   test('adds 1 + 2 to equal 3', () => {
     expect(calculator.add(1, 2)).toBe(3);
