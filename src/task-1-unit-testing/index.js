@@ -21,6 +21,6 @@ rl.on('line', (input) => {
       console.log("Неизвестная операция. Попробуйте ещё раз");
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 });
